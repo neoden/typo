@@ -1,0 +1,26 @@
+# Мусор от IDE, GDE, менеджеров пакетов и самого питона
+.idea/
+.DS_Store
+node_modules/
+bower_components/
+__pycache__/
+*.pyc
+*.egg-info
+*.egg
+*.pid
+.sass-cache/
+dist/
+
+# Локальные конфиги
+/typo/config.local.py
+/conf/
+
+# Файлы, создаваемые приложением
+/log
+/assets/
+/cache/
+/var/
+/build
+/test_data
+
+/typo/static/temp/
