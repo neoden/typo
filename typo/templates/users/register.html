@@ -1,0 +1,13 @@
+Регистрация
+
+
+<form method="post" action="{{ url_for('users.register') }}">
+    {{ form.csrf_token }}
+
+    {{ form.email }}
+    {{ form.nickname }}
+    {{ form.password }}
+    {{ form.password2 }}
+
+    <button>Зарегистрироваться</button>
+</form>
