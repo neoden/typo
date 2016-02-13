@@ -5,7 +5,7 @@ from flask.ext.login import login_user, logout_user
 from werkzeug.security import generate_password_hash
 
 from typo.models import User
-from typo.core import db, redis, mail
+from typo.core import db, redis, mail, csrf
 
 from . import mod
 from .forms import LoginForm, RegisterForm
@@ -18,15 +18,19 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter(User.email == form.email.data).first()
 
-        if User.roles & User.ROLE_LOGIN == 0:
-            flash('Пользователь заблокирован', 'error')
-        elif user and User.validate_login(user.password_hash, form.password.data):
-            login_user(user)
-            #flash("Добро пожаловать", category='success')
-            return redirect(request.args.get("next") or url_for('.index'))
+        if user:
+            if user.validate_login(form.password.data):
+                if user.has_role(User.ROLE_LOGIN):
+                    login_user(user)
+                    #flash("Добро пожаловать", category='success')
+                    return redirect(request.args.get("next") or url_for('home.index'))
+                else:
+                    flash('Пользователь заблокирован', 'error')
+            else:
+                flash("Неверный логин или пароль", category='error')
         else:
             flash("Неверный логин или пароль", category='error')
-
+        
     return redirect(url_for('home.index'))
 
 
@@ -49,25 +53,25 @@ def register():
                 if user:
                     flash("Пользователь с таким email уже зарегистрирован", category="warning")
                 else:
-                    user = User(
-                        email=form.email.data,
-                        password_hash=generate_password_hash(form.password.data),
-                        name=form.nickname.data
-                    )
-                    db.session.add(user)
-                    db.session.commit()
+                    registration_data = {
+                        'name': form.nickname.data,
+                        'email': form.email.data,
+                        'password_hash': generate_password_hash(form.password.data)
+                    }
 
-                    token = 'register:{}'.format(uuid.uuid4().hex)
-                    redis.set(token, user.id, 60 * 60 * 24)
+                    token = uuid.uuid4().hex
+                    key = 'register:{}'.format(token)
+                    redis.hmset(key, registration_data)
+                    redis.expire(key, 60 * 60 * 24)
 
-                    mail.send_message(
+                    mail.send(
                         subject='Подтверждение регистрации',
-                        recipients=[user.email],
-                        html=render_template('email/activate.html', token=token, user_id=user.id),
-                        body=render_template('email/activate.txt', token=token, user_id=user.id)
+                        recipients=[form.email.data],
+                        html=render_template('email/activate.html', token=token),
+                        text=render_template('email/activate.txt', token=token)
                     )
 
-                    flash('Письмо с запросом на подтверждение регистрации выслано на адрес {}'.format(user.email), 'info')
+                    flash('Письмо с запросом на подтверждение регистрации выслано на адрес {}'.format(form.email.data), 'info')
 
                     return redirect(url_for('home.index'))
 
@@ -76,19 +80,22 @@ def register():
 
 @mod.route('/activate')
 def activate():
-    token = request.get('token', '')
-    user_id = request.get('user_id', 0, int)
+    token = request.args.get('token', '')
 
     key = 'register:{}'.format(token)
 
-    if redis.get(key) == user_id:
+    registration_data = {k.decode('utf-8'): v.decode('utf-8') for k, v in redis.hgetall(key).items()}
+    if registration_data:
         redis.delete(key)
 
-        user = User.get_or_404(user_id)
+        user = User(roles=User.ROLE_LOGIN, **registration_data)
+        db.session.add(user)
+        db.session.commit()
+
         login_user(user)
 
         flash("Добро пожаловать", category='success')
-        return redirect(request.args.get("next") or url_for('.index'))
+        return redirect(request.args.get("next") or url_for('home.index'))
     else:
         flash('Ссылка для активации устарела', 'error')
         return redirect(url_for('home.index'))

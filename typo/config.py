@@ -9,13 +9,10 @@ SECRET_KEY = 'change-this!'
 ASSET_STORAGE_ROOT = '/var/typo/assets'
 ASSET_URL_ROOT = '/assets'
 
-MAIL_MAILER = '/usr/sbin/sendmail'
-MAIL_MAILER_FLAGS = '-t'
-MAIL_DEBUG = DEBUG
-DEFAULT_MAIL_SENDER = 'noreply@typo.ru'
-DEFAULT_MAX_EMAILS = None
-MAIL_FAIL_SILENTLY = True
-MAIL_SUPPRESS_SEND = False
+MAIL_ENABLED = True
+MAIL_DEFAULT_SENDER = 'noreply@typo.ru'
+MAIL_SERVER = '127.0.0.1'
+MAIL_PORT = 25
 
 REDIS_URL = 'redis://localhost:6379/0'
 

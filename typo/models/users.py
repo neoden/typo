@@ -1,11 +1,13 @@
 import hashlib
 
 from flask import current_app
+from flask.ext.login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from typo.core import db
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
     ROLE_LOGIN = 1
@@ -25,10 +27,6 @@ class User(db.Model):
     def __repr__(self):
         return '<User %d:%s>' % (0 if self.id is None else self.id, self.name)
 
-    @staticmethod
-    def hash_password(data):
-        return hashlib.md5((data + current_app.config['SECRET_KEY']).encode()).hexdigest()
-
     @property
     def is_active(self):
         return bool(self.roles & self.ROLE_LOGIN)
@@ -43,3 +41,9 @@ class User(db.Model):
 
     def get_id(self):
         return str(self.id)
+
+    def has_role(self, role):
+        return self.roles & role > 0
+
+    def validate_login(self, password):
+        return check_password_hash(self.password_hash, password)

@@ -3,7 +3,7 @@ import json
 from flask import Flask
 from redis import StrictRedis
 
-from typo.core import login_manager, redis, db, mail
+from typo.core import login_manager, redis, db, mail, csrf
 from typo import models
 
 
@@ -15,7 +15,8 @@ def create_app(cfg=None, purpose=None):
     redis.init_app(app)
     db.init_app(app)
     mail.init_app(app)
-
+    csrf.init_app(app)
+    
     login_manager.init_app(app)
 
     from .users import mod as mod_user

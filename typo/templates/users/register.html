@@ -1,5 +1,6 @@
-Регистрация
+{% extends 'base.html' %}
 
+{% block content %}
 
 <form method="post" action="{{ url_for('users.register') }}">
     {{ form.csrf_token }}
@@ -11,3 +12,5 @@
 
     <button>Зарегистрироваться</button>
 </form>
+
+{% endblock %}
