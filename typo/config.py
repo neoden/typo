@@ -18,3 +18,6 @@ REDIS_URL = 'redis://localhost:6379/0'
 
 MQ_CHANNEL = 'typo'
 MQ_POLLING_DELAY = 0.01
+
+WTF_CSRF_CHECK_DEFAULT = False
+WTF_CSRF_ENABLED = False

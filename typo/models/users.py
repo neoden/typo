@@ -14,7 +14,6 @@ class User(db.Model, UserMixin):
     ROLE_MODERATOR = 2
     ROLE_ADMIN = 2^32 - 1
 
-
     id = db.Column(db.Integer(), primary_key=True)
     created = db.Column(db.DateTime(timezone=True), server_default=db.text('now()'), nullable=False)
 

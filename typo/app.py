@@ -25,6 +25,9 @@ def create_app(cfg=None, purpose=None):
     from .home import mod as mod_home
     app.register_blueprint(mod_home)
 
+    from .my import mod as mod_my
+    app.register_blueprint(mod_my)
+
     return app
 
 
