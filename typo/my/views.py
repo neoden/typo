@@ -27,3 +27,16 @@ def post(post_id=None):
         return redirect(url_for('home.index'))
 
     return render_template('my/post.html', form=form, post=post)
+
+
+@mod.route('/profile/', methods=('GET', 'POST'))
+@login_required
+def profile():
+    user = current_user
+    form = ProfileEditForm(request.form, user)
+
+    if form.validate_on_submit():
+        form.populate_obj(user)
+        db.session.commit()
+
+    return render_template('my/profile.html', user=user)

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="/static/css/post.css">
+{% endblock %}
+
+{% block content %}
+
+<h2>{{ post.title }}</h2>
+<div>{{ post.text|safe }}</div>
+<ul class="nav navbar-nav post_bar">
+    <li><a class="user-name" href="{{ url_for('users.profile', user_id=post.author_id) }}">@{{ post.author.name }}</a></li>
+    <li>
+        <div class="navbar-form">
+            {% if post.author_id|string == current_user.get_id() %}
+                <a class="btn btn-default" href="{{ url_for('my.post', post_id=post.id) }}">Редактировать</a>
+            {% endif %}
+        </div>
+    </li>
+</ul>
+
+{% endblock %}

@@ -99,3 +99,9 @@ def activate():
     else:
         flash('Ссылка для активации устарела', 'error')
         return redirect(url_for('home.index'))
+
+
+@mod.route('/users/<int:user_id>')
+def profile(user_id):
+    user = User.query.get_or_404(user_id)
+    return render_template('users/profile.html', user=user)

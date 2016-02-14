@@ -11,3 +11,5 @@ class Post(db.Model):
     published = db.Column(db.DateTime(timezone=True), nullable=True)
     title = db.Column(db.String(255))
     text = db.Column(db.Text)
+
+    author = db.relationship('User', foreign_keys='Post.author_id')
