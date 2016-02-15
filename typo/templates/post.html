@@ -6,17 +6,41 @@
 
 {% block content %}
 
-<h2>{{ post.title }}</h2>
-<div>{{ post.text|safe }}</div>
-<ul class="nav navbar-nav post_bar">
-    <li><a class="user-name" href="{{ url_for('users.profile', user_id=post.author_id) }}">@{{ post.author.name }}</a></li>
-    <li>
-        <div class="navbar-form">
-            {% if post.author_id|string == current_user.get_id() %}
-                <a class="btn btn-default" href="{{ url_for('my.post', post_id=post.id) }}">Редактировать</a>
-            {% endif %}
+
+<div id="post">
+    <h2>{{ post.title }}</h2>
+    <div>{{ post.text|safe }}</div>
+</div>
+
+<div id="post-footer">
+    <ul class="nav navbar-nav post-bar">
+        <li><a class="user-name" href="{{ url_for('users.profile', user_id=post.author_id) }}">@{{ post.author.name }}</a></li>
+        <li>
+            <div class="navbar-form">
+                {% if post.author_id|string == current_user.get_id() %}
+                    <a class="btn btn-default" href="{{ url_for('my.post', post_id=post.id) }}">Редактировать</a>
+                {% endif %}
+            </div>
+        </li>
+    </ul>
+</div>
+
+<div id="comments">
+    <h4>Написать комментарий</h4>
+    <form method="post" action="{{ url_for('home.comment', post_id=post.id) }}">
+        <div class="form-group">
+            <textarea class="form-control" rows="3" name="text" id="text"></textarea>
         </div>
-    </li>
-</ul>
+        <div class="form-group">
+            <button class="btn btn-default">Отправить</button>
+        </div>
+    </form>
+
+    {% for comment in comments %}
+    <div class="comment-block">
+        {{ comment.text }}
+    </div>
+    {% endfor %}
+</div>
 
 {% endblock %}

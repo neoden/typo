@@ -2,6 +2,15 @@
     font-weight: bold;
 }
 
-.post_bar {
+.navbar-nav {
+    float: none;
+    display: inline-block;
+}
+
+#post-footer {
+    margin-top: 20px;
+}
+
+.post-bar {
     background-color: #eee;
 }
