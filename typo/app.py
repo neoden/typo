@@ -5,6 +5,7 @@ from redis import StrictRedis
 
 from typo.core import login_manager, redis, db, mail, csrf
 from typo import models
+from typo.jinja import register_jinja_filters
 
 
 def create_app(cfg=None, purpose=None):
@@ -27,6 +28,8 @@ def create_app(cfg=None, purpose=None):
 
     from .my import mod as mod_my
     app.register_blueprint(mod_my)
+
+    register_jinja_filters(app)
 
     return app
 

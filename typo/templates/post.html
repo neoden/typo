@@ -26,21 +26,49 @@
 </div>
 
 <div id="comments">
-    <h4>Написать комментарий</h4>
-    <form method="post" action="{{ url_for('home.comment', post_id=post.id) }}">
-        <div class="form-group">
-            <textarea class="form-control" rows="3" name="text" id="text"></textarea>
-        </div>
-        <div class="form-group">
-            <button class="btn btn-default">Отправить</button>
-        </div>
-    </form>
+    <ul class="list-group">
+        {% for comment in comments %}
+        <li class="list-group-item comment-block comment-level-{{ comment.level }}">
+            <div class="comment-header">
+                <img src="" width="24" height="24"/>
+                <a class="user-name" href="{{ url_for('users.profile', user_id=post.author_id) }}">{{ comment.author.name }}</a>
+                <span class="datetime">{{ comment.created|longdatetime }}</span>
+            </div>
+            <div class="comment-body">
+                {{ comment.text }}
+            </div>
+            <div class="reply">
+                <a href="#" class="reply-link reply-link-comments" data-id="{{ comment.id }}">ответить</a>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
 
-    {% for comment in comments %}
-    <div class="comment-block">
-        {{ comment.text }}
+    <a href="#" class="reply-link reply-link-bottom">Написать комментарий</a>
+    <div id="write-comment">
+        <form method="post" action="{{ url_for('home.comment', post_id=post.id) }}">
+            <input type="hidden" name="replyto" id="replyto"/>
+            <div class="form-group">
+                <textarea class="form-control" rows="3" name="text" id="text"></textarea>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-default">Отправить</button>
+            </div>
+        </form>
     </div>
-    {% endfor %}
 </div>
 
+{% endblock %}
+
+{% block tail %}
+<script type="text/javascript">
+$(function() {
+    $(".reply-link").click(function(e) {
+        e.preventDefault();
+        $this = $(this);
+        $("#write-comment").insertAfter($this);
+        $("#replyto").val($this.data("id"));
+    })
+});
+</script>
 {% endblock %}

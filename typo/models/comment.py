@@ -16,3 +16,8 @@ class Comment(db.Model):
 
     post = db.relationship('Post')
     author = db.relationship('User')
+
+    @property
+    def level(self):
+        return str(len(self.path)) if len(self.path) else '10plus'
+    

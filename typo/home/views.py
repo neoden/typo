@@ -25,7 +25,6 @@ def post(post_id):
 @login_required
 def comment(post_id):
     post = Post.query.get_or_404(post_id)
-    reply_to = request.args.get('reply_to', 0, int)
 
     form = CommentForm(request.form)
 
@@ -33,9 +32,11 @@ def comment(post_id):
         comment = Comment(post_id=post.id, author_id=current_user.id, text=form.text.data)
         db.session.add(comment)
         db.session.flush()
-        if reply_to > 0:
-            parent = Comment.query.get_or_404(reply_to)
-            comment.path = parent.path.append(comment.id)
+
+        if form.replyto.data:
+            parent = Comment.query.get_or_404(form.replyto.data)
+            comment.path = parent.path
+            comment.path.append(comment.id)
         else:
             comment.path = [comment.id]
         db.session.commit()

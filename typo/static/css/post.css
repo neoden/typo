@@ -1,16 +1,96 @@
 .user-name {
     font-weight: bold;
-}
-
-.navbar-nav {
-    float: none;
-    display: inline-block;
+    margin-left: 5px;
 }
 
 #post-footer {
     margin-top: 20px;
 }
 
+div#comments {
+    margin-top: 20px;
+}
+
 .post-bar {
+    float: none;
+    display: inline-block;
     background-color: #eee;
+}
+
+li.comment-block {
+    padding: 5px 10px 15px;
+    border: 0px;
+}
+
+.comment-header {
+    margin-bottom: 10px;
+}
+
+span.datetime {
+    font-size: smaller;
+    position: relative;
+    color: #888;
+    margin-left: 10px;
+}
+
+.comment-body {
+    margin-bottom: 5px;
+}
+
+.reply-link:link, .reply-link:hover, .reply-link:visited, .reply-link:active {
+    text-decoration: none;
+    border-bottom: 1px dashed;
+}
+
+.reply-link-comments {
+    font-size: smaller;
+}
+
+.reply-link-bottom, .reply-link-bottom:hover {
+    font-size: larger;
+    display: inline-block;
+}
+
+#write-comment {
+    margin-top: 10px;
+}
+
+.comment-level-2 {
+    margin-left: 20px;
+}
+
+.comment-level-3 {
+    margin-left: 40px;
+}
+
+.comment-level-4 {
+    margin-left: 60px;
+}
+
+.comment-level-5 {
+    margin-left: 80px;
+}
+
+.comment-level-6 {
+    margin-left: 100px;
+}
+
+.comment-level-7 {
+    margin-left: 120px;
+}
+
+.comment-level-8 {
+    margin-left: 140px;
+}
+
+.comment-level-9 {
+    margin-left: 160px;
+}
+
+.comment-level-10 {
+    margin-left: 180px;
+}
+
+.comment-level-10plus {
+    margin-left: 200px;
 }

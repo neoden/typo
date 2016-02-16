@@ -9,11 +9,13 @@
 
 {% block content %}
 
-{% if post.id %}
-    <h2>Редактировать пост</h2>
-{% else %}
-    <h2>Создать пост</h2>
-{% endif %}
+<div class="col-sm-offset-2 col-sm-10">
+    {% if post.id %}
+        <h2>Редактировать пост</h2>
+    {% else %}
+        <h2>Создать пост</h2>
+    {% endif %}
+</div>
 
 <form method="post" class="form-horizontal" id="form-main"
     {% if post.id %}
@@ -37,7 +39,7 @@
         </div>
     </div>
 
-    <div class="col-sm-offset-2">
+    <div class="col-sm-offset-2 col-sm-10">
         <button class="btn btn-default" type="submit">Сохранить</button>
         <button class="btn btn-default" type="button">Опубликовать</button>
     </div>
