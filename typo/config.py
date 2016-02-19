@@ -10,7 +10,7 @@ ASSET_STORAGE_ROOT = '/var/typo/assets'
 ASSET_URL_ROOT = '/assets'
 
 MAIL_ENABLED = True
-MAIL_DEFAULT_SENDER = 'noreply@typo.ru'
+MAIL_DEFAULT_SENDER = 'noreply@stoneinfocus.org'
 MAIL_SERVER = '127.0.0.1'
 MAIL_PORT = 25
 
