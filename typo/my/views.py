@@ -5,7 +5,7 @@ from . import mod
 
 from typo.models import Post
 from typo.core import db
-from .forms import PostForm
+from .forms import PostForm, ProfileEditForm
 
 
 @mod.route('/posts/new/', methods=('GET', 'POST'))

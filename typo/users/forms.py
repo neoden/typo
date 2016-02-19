@@ -10,7 +10,7 @@ class LoginForm(Form):
 
 
 class RegisterForm(Form):
-    nickname = StringField('Nickname', validators=[v.required()])
+    nickname = StringField('Имя', validators=[v.required()])
     email = EmailField('Email', validators=[v.required()])
-    password = PasswordField('Password', validators=[v.required()])
-    password2 = PasswordField('Password2', validators=[v.required()])
+    password = PasswordField('Пароль', validators=[v.required()])
+    password2 = PasswordField('Пароль ещё раз', validators=[v.required()])

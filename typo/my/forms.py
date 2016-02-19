@@ -7,3 +7,7 @@ import wtforms.validators as v
 class PostForm(Form):
     title = TextField('Заголовок', validators=[v.required()])
     text = TextAreaField('Текст', validators=[v.required()])
+
+
+class ProfileEditForm(Form):
+    pass
