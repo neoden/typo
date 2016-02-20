@@ -38,10 +38,13 @@
             <div id="summernote">{{ (form.text.data or '')|safe }}</div>
         </div>
     </div>
+    <div style="display: none">
+        {{ form.publish(id='id-publish') }}
+    </div>
 
     <div class="col-sm-offset-2 col-sm-10">
         <button class="btn btn-default" type="submit">Сохранить</button>
-        <button class="btn btn-default" type="button">Опубликовать</button>
+        <button class="btn btn-default" type="button" id="btn-publish">Опубликовать</button>
     </div>
 </form>
 
@@ -65,6 +68,10 @@ $(document).ready(function() {
   });
   $("#form-main").submit(function(e) {
     $("#txt_text").val($("#summernote").summernote("code"));
+  });
+  $("#btn-publish").click(function() {
+    $("#id-publish").prop('checked', true);
+    $("#form-main").submit();
   })
 })    
 </script>

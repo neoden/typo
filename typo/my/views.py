@@ -23,6 +23,8 @@ def post(post_id=None):
     if form.validate_on_submit():
         form.populate_obj(post)
         post.author_id = current_user.get_id()
+        if form.publish.data == True:
+            post.status = 'published'
         db.session.commit()
         return redirect(url_for('home.index'))
 
