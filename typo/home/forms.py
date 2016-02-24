@@ -5,4 +5,4 @@ import wtforms.validators as v
 
 class CommentForm(Form):
     text = TextAreaField('Текст', validators=[v.required()])
-    replyto = IntegerField('Id комментария')
+    replyto = IntegerField('Id комментария', validators=[v.optional()])
