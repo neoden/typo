@@ -16,9 +16,8 @@ def index():
 
 @mod.route('/posts/<int:post_id>')
 def post(post_id):
-    post = Post.query.get_or_404(post_id)
-    comments = Comment.query.filter_by(post_id=post.id).order_by(Comment.path).all()
-    return render_template('post.html', post=post, comments=comments)
+    post = Post.query.options(db.joinedload('comments')).get_or_404(post_id)
+    return render_template('post.html', post=post)
 
 
 @mod.route('/posts/<int:post_id>/comment', methods=('POST',))

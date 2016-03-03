@@ -31,6 +31,14 @@ def post(post_id=None):
     return render_template('my/post.html', form=form, post=post)
 
 
+@mod.route('/posts/')
+@login_required
+def posts():
+    posts = Post.query.filter_by(author_id=current_user.get_id())
+    pagination = posts.paginate()
+    return render_template('my/posts.html', posts=pagination)
+
+
 @mod.route('/profile/', methods=('GET', 'POST'))
 @login_required
 def profile():

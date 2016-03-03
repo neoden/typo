@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style type="text/css">
+.post-status {
+    color: wheat;
+    font-size: smaller;
+}
+
+.post-date {
+    color: gray;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+{% for post in posts.items %}
+<div class="container">
+    <h3>
+        <a href="{{ url_for('home.post', post_id=post.id) }}">{{ post.title }}</a>
+        <span class="post-status">{{ post.status_label }}</span>
+    </h3>
+    <div class="post-date">
+        {{ post.created|datetime }}
+    </div>
+    <p>{{ post.text|safe }}</p>
+</div>
+{% endfor %}
+
+{% endblock %}

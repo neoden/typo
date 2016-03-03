@@ -20,4 +20,3 @@ class Comment(db.Model):
     @property
     def level(self):
         return str(len(self.path)) if len(self.path) else '10plus'
-    

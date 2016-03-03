@@ -13,3 +13,12 @@ class Post(db.Model):
     text = db.Column(db.Text)
 
     author = db.relationship('User', foreign_keys='Post.author_id')
+    comments = db.relationship('Comment', order_by='Comment.path')
+
+    @property
+    def status_label(self):
+        return {
+            'draft': 'Черновик',
+            'published': 'Опубликован',
+            'deleted': 'Удалён'
+        }[self.status]
