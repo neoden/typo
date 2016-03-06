@@ -1,5 +1,6 @@
 from flask import render_template, request, redirect, url_for
 from flask.ext.login import login_required, current_user
+from sqlalchemy import desc
 
 from . import mod
 
@@ -34,7 +35,7 @@ def post(post_id=None):
 @mod.route('/posts/')
 @login_required
 def posts():
-    posts = Post.query.filter_by(author_id=current_user.get_id())
+    posts = Post.query.filter_by(author_id=current_user.get_id()).order_by(desc(Post.created))
     pagination = posts.paginate()
     return render_template('my/posts.html', posts=pagination)
 

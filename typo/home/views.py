@@ -1,5 +1,6 @@
 from flask import render_template, request, redirect, url_for
 from flask.ext.login import login_required, current_user
+from sqlalchemy import desc
 
 from . import mod
 from .forms import CommentForm
@@ -10,7 +11,7 @@ from typo.models import Post, Comment
 
 @mod.route('/')
 def index():
-    posts = Post.query.filter_by(status='published').paginate()
+    posts = Post.query.filter_by(status='published').order_by(desc(Post.created)).paginate()
     return render_template('index.html', posts=posts)
 
 
