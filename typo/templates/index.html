@@ -6,7 +6,7 @@
 {% for post in posts.items %}
 <div class="container">
 <h3><a href="{{ url_for('home.post', post_id=post.id) }}">{{ post.title }}</a></h3>
-<p>{{ post.text|safe }}</p>
+<p>{{ post.html|safe }}</p>
 </div>
 {% endfor %}
 

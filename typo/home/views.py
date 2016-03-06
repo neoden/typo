@@ -1,3 +1,6 @@
+import bleach
+import markdown
+
 from flask import render_template, request, redirect, url_for
 from flask.ext.login import login_required, current_user
 from sqlalchemy import desc
@@ -7,6 +10,12 @@ from .forms import CommentForm
 
 from typo.core import db
 from typo.models import Post, Comment
+
+
+COMMENT_WHITELIST = (
+    'p', 'blockquote', 'ul', 'ol', 'li',
+    'em', 'strong', 'a', 'img', 'code', 'pre'
+)
 
 
 @mod.route('/')
@@ -29,7 +38,10 @@ def comment(post_id):
     form = CommentForm(request.form)
 
     if form.validate_on_submit():
-        comment = Comment(post_id=post.id, author_id=current_user.id, text=form.text.data)
+        comment = Comment(post_id=post.id, author_id=current_user.id, markdown=form.markdown.data)
+        dirty_html = markdown.markdown(form.markdown.data, output_format='html5')
+        comment.html = bleach.clean(dirty_html, tags=COMMENT_WHITELIST)
+
         db.session.add(comment)
         db.session.flush()
 

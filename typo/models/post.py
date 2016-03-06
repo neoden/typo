@@ -10,7 +10,8 @@ class Post(db.Model):
     status = db.Column(db.Enum('draft', 'published', 'deleted', name='post_status'), server_default='draft', default='draft')
     published = db.Column(db.DateTime(timezone=True), nullable=True)
     title = db.Column(db.String(255))
-    text = db.Column(db.Text)
+    markdown = db.Column(db.Text)
+    html = db.Column(db.Text)
 
     author = db.relationship('User', foreign_keys='Post.author_id')
     comments = db.relationship('Comment', order_by='Comment.path')

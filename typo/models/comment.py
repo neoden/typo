@@ -12,7 +12,8 @@ class Comment(db.Model):
     post_id = db.Column(db.ForeignKey('posts.id'), nullable=False, index=True)
     author_id = db.Column(db.ForeignKey('users.id'), nullable=False, index=True)
     path = db.Column(ARRAY(db.Integer()), nullable=True)
-    text = db.Column(db.Text(), nullable=False)
+    markdown = db.Column(db.Text(), nullable=True)
+    html = db.Column(db.Text(), nullable=True)
 
     post = db.relationship('Post')
     author = db.relationship('User')

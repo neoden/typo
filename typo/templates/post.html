@@ -8,8 +8,8 @@
 
 
 <div id="post">
-    <h2>{{ post.title }}</h2>
-    <div>{{ post.text|safe }}</div>
+    <h1>{{ post.title }}</h1>
+    <div>{{ post.html|safe }}</div>
 </div>
 
 <div id="post-footer">
@@ -35,7 +35,7 @@
                 <span class="datetime">{{ comment.created|longdatetime }}</span>
             </div>
             <div class="comment-body">
-                {{ comment.text }}
+                {{ comment.html|safe }}
             </div>
             <div class="reply">
                 <a href="#" class="reply-link reply-link-comments" data-id="{{ comment.id }}">ответить</a>
@@ -49,7 +49,7 @@
         <form method="post" action="{{ url_for('home.comment', post_id=post.id) }}">
             <input type="hidden" name="replyto" id="replyto"/>
             <div class="form-group">
-                <textarea class="form-control" rows="3" name="text" id="text"></textarea>
+                <textarea class="form-control" rows="3" name="markdown" id="markdown"></textarea>
             </div>
             <div class="form-group">
                 <button class="btn btn-default">Отправить</button>
