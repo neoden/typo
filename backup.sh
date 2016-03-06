@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-BACKUP_DIR=/var/backup
 DATE=$(eval date +%Y%m%d)
 
 function check_param() {
@@ -14,6 +13,7 @@ function check_param() {
 
 source $1
 
+check_param "BACKUP_DIR"
 check_param "HOOK_URL"
 check_param "STORAGE_USER"
 check_param "STORAGE_KEY"
@@ -80,7 +80,7 @@ supload -u ${STORAGE_USER} -k ${STORAGE_KEY} -d 7d ${STORAGE_DIR} ${CURRENT_BACK
 if [ $? -ne 0 ]; then send_report 1 "supload failed"; fi
 
 # rm files older than X days
-find ${BACKUP_DIR}* -mtime +${DAYS_TO_KEEP_LOCAL_BACKUPS} -exec rm {} \;
+find ${BACKUP_DIR}/* -mtime +${DAYS_TO_KEEP_LOCAL_BACKUPS} -exec rm {} \;
 if [ $? -ne 0 ]; then send_report 1 "delete old backups failed"; fi
 
 send_report 0
