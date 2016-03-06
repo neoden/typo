@@ -7,7 +7,7 @@ DB_USER=typo
 DAYS_TO_KEEP_LOCAL_BACKUPS=7
 DATE=$(eval date +%Y%m%d)
 LOG_DIR=/var/log/${APP_NAME}
-LOG=${LOG_DIR}/${DB_NAME}.log
+LOG=${LOG_DIR}/${DB_NAME}_backup.log
 
 # variables passed from outside:
 #
