@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from '/macros.html' import render_pagination %}
 
 {% block content %}
 
@@ -8,5 +9,7 @@
 <p>{{ post.text|safe }}</p>
 </div>
 {% endfor %}
+
+{{ render_pagination(posts, 'home.index') }}
 
 {% endblock %}
