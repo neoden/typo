@@ -37,4 +37,4 @@ class Post(db.Model):
 
     @property
     def allowed_delete(self):
-        return self.status != 'deleted'
+        return self.status != 'deleted' and self.id
