@@ -4,8 +4,8 @@ import wtforms.validators as v
 
 
 class PostForm(Form):
-    title = StringField('Заголовок', validators=[v.required()])
-    markdown = TextAreaField('Текст', validators=[v.required()])
+    title = StringField('Заголовок', validators=[v.required('Нужен заголовок')])
+    markdown = TextAreaField('Текст', validators=[v.required('Нужен текст')])
     publish = BooleanField('Опубликовать')
 
 

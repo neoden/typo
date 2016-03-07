@@ -2,9 +2,6 @@
 
 {% block head %}
 
-<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.7.1/summernote.css" rel="stylesheet">
-<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.7.1/summernote.js"></script>
-
 {% endblock %}
 
 {% block content %}
@@ -34,7 +31,8 @@
     <div class="form-group">
         <label for="{{ form.markdown.name }}" class="col-sm-2 control-label">{{ form.markdown.label }}</label>
         <div class="col-sm-10">
-            {{ form.markdown(class="form-control", rows="10") }}
+            {{ form.markdown(class="form-control", rows="20") }}
+            <span class="help-block">Для форматирования можно использовать <a href="https://ru.wikipedia.org/wiki/Markdown">Markdown</a></span>
         </div>
     </div>
     <div style="display: none">

@@ -16,18 +16,22 @@
 
 {% block content %}
 
-{% for post in posts.items %}
 <div class="container">
-    <h3>
-        <a href="{{ url_for('home.post', post_id=post.id) }}">{{ post.title }}</a>
-        <span class="post-status">{{ post.status_label }}</span>
-    </h3>
-    <div class="post-date">
-        {{ post.created|datetime }}
-    </div>
-    <p>{{ post.html|safe }}</p>
+{% if posts.total %}
+    {% for post in posts.items %}
+        <h3>
+            <a href="{{ url_for('home.post', post_id=post.id) }}">{{ post.title }}</a>
+            <span class="post-status">{{ post.status_label }}</span>
+        </h3>
+        <div class="post-date">
+            {{ post.created|datetime }}
+        </div>
+        <p>{{ post.html|safe }}</p>
+    {% endfor %}
+{% else %}
+    Тут пока ничего нет
+{% endif %}
 </div>
-{% endfor %}
 
 {{ render_pagination(posts, '.posts') }}
 

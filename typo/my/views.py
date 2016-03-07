@@ -10,6 +10,7 @@ from . import mod
 from typo.models import Post
 from typo.core import db
 from .forms import PostForm, ProfileEditForm
+from typo.util import flash_errors
 
 
 POST_WHITELIST = (
@@ -30,15 +31,18 @@ def post(post_id=None):
 
     form = PostForm(request.form, post)
 
-    if form.validate_on_submit():
-        form.populate_obj(post)
-        post.author_id = current_user.get_id()
-        dirty_html = markdown.markdown(form.markdown.data, output_format='html5')
-        post.html = bleach.clean(dirty_html, tags=POST_WHITELIST)
-        if form.publish.data:
-            post.status = 'published'
-        db.session.commit()
-        return redirect(url_for('home.index'))
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            form.populate_obj(post)
+            post.author_id = current_user.get_id()
+            dirty_html = markdown.markdown(form.markdown.data, output_format='html5')
+            post.html = bleach.clean(dirty_html, tags=POST_WHITELIST)
+            if form.publish.data:
+                post.status = 'published'
+            db.session.commit()
+            return redirect(url_for('home.index'))
+        else:
+            flash_errors(form)
 
     return render_template('my/post.html', form=form, post=post)
 
@@ -57,8 +61,11 @@ def profile():
     user = current_user
     form = ProfileEditForm(request.form, user)
 
-    if form.validate_on_submit():
-        form.populate_obj(user)
-        db.session.commit()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            form.populate_obj(user)
+            db.session.commit()
+        else:
+            flash_errors(form)
 
     return render_template('my/profile.html', user=user)
