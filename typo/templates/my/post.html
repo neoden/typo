@@ -32,16 +32,37 @@
         <label for="{{ form.markdown.name }}" class="col-sm-2 control-label">{{ form.markdown.label }}</label>
         <div class="col-sm-10">
             {{ form.markdown(class="form-control", rows="20") }}
-            <span class="help-block">Для форматирования можно использовать <a href="https://ru.wikipedia.org/wiki/Markdown">Markdown</a></span>
+            <span class="help-block">Для форматирования можно использовать
+                <a target="_blank" href="https://ru.wikipedia.org/wiki/Markdown#.D0.9F.D1.80.D0.B8.D0.BC.D0.B5.D1.80.D1.8B_.D1.81.D0.B8.D0.BD.D1.82.D0.B0.D0.BA.D1.81.D0.B8.D1.81.D0.B0">
+                    Markdown
+                </a>
+            </span>
         </div>
     </div>
-    <div style="display: none">
-        {{ form.publish(id='id-publish') }}
+    <div class="form-group" style="display: none">
+        <label for="post-status" class="col-sm-2 control-label">Статус</label>
+        <div class="col-sm-10">
+            {{ form.status(class="form-control") }}
+        </div>
     </div>
 
     <div class="col-sm-offset-2 col-sm-10">
         <button class="btn btn-default" type="submit">Сохранить</button>
-        <button class="btn btn-default" type="button" id="btn-publish">Опубликовать</button>
+        {% if post.allowed_publish %}
+            <button class="btn btn-default" type="button" id="btn-publish">
+                Опубликовать
+            </button>
+        {% endif %}
+        {% if post.allowed_draft %}
+            <button class="btn btn-default" type="button" id="btn-draft">
+                Вернуть в черновики
+            </button>
+        {% endif %}
+        {% if post.allowed_delete %}
+            <button class="btn btn-danger" type="button" id="btn-delete">
+                Удалить
+            </button>
+        {% endif %}
     </div>
 </form>
 
@@ -50,11 +71,19 @@
 {% block tail %}
 <script type="text/javascript">
 $(document).ready(function() {
-  $("#btn-publish").click(function() {
-    $("#id-publish").prop('checked', true);
-    $("#form-main").submit();
-  })
-})    
+    $("#btn-publish").click(function() {
+        $("#status").val('published');
+        $("#form-main").submit();
+    });
+    $("#btn-draft").click(function() {
+        $("#status").val('draft');
+        $("#form-main").submit();
+    });
+    $("#btn-delete").click(function() {
+        $("#status").val('deleted');
+        $("#form-main").submit();
+    });
+})
 </script>
 
 {% endblock %}

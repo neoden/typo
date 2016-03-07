@@ -1,7 +1,7 @@
 import bleach
 import markdown
 
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, flash
 from flask.ext.login import login_required, current_user
 from sqlalchemy import desc
 
@@ -32,13 +32,16 @@ def post(post_id=None):
     form = PostForm(request.form, post)
 
     if request.method == 'POST':
-        if form.validate_on_submit():
+        if form.status.data == 'deleted':
+            post.status = 'deleted'
+            db.session.commit()
+            flash('Пост удалён', 'info')
+            return redirect(url_for('home.index'))
+        elif form.validate_on_submit():
             form.populate_obj(post)
             post.author_id = current_user.get_id()
             dirty_html = markdown.markdown(form.markdown.data, output_format='html5')
             post.html = bleach.clean(dirty_html, tags=POST_WHITELIST)
-            if form.publish.data:
-                post.status = 'published'
             db.session.commit()
             return redirect(url_for('home.index'))
         else:
@@ -50,7 +53,8 @@ def post(post_id=None):
 @mod.route('/posts/')
 @login_required
 def posts():
-    posts = Post.query.filter_by(author_id=current_user.get_id()).order_by(desc(Post.created))
+    posts = Post.query.filter(Post.author_id == current_user.get_id(), Post.status != 'deleted')\
+                      .order_by(desc(Post.created))
     pagination = posts.paginate()
     return render_template('my/posts.html', posts=pagination)
 
