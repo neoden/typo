@@ -14,8 +14,8 @@ from typo.util import flash_errors
 
 
 POST_WHITELIST = (
-    'p', 'h1', 'h2', 'h3', 'blockquote', 'ul', 'ol', 'li',
-    'em', 'strong', 'a', 'img', 'code', 'pre'
+    'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote',
+    'ul', 'ol', 'li', 'em', 'strong', 'a', 'img', 'code', 'pre'
 )
 
 
